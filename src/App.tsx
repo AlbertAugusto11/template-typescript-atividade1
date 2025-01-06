@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react"
 import { api } from "./services/api";
+import  imgLoading  from "./Imgs/carregando5.gif"
+
+interface INews{
+  id: number;
+  category: string;
+  title: string;
+  content: string;
+  author: string;
+}
 
 function App() {
   const [loading, setLoading] = useState(false);
-  const [postList, setPostList] = useState([]);
+  const [postList, setPostList] = useState<INews[]>([]);
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -24,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-      <ul>
+      {loading === true ? <img src={imgLoading} title="CARREDANDO"/> : <ul>
         {postList.map(post => (
           <li key={post.id}>
             <h3>{post.title}</h3>
@@ -32,7 +41,7 @@ function App() {
             <span>{post.author}</span>
           </li>
         ))}
-      </ul>
+      </ul>}
     </div>
   )
 }
