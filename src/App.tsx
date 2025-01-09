@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { api } from "./services/api";
 import  imgLoading  from "./Imgs/carregando5.gif"
 import PostNews from "./Components/PostNews";
+import { Axios, AxiosError } from "axios";
 
 export interface INews{
   id: number;
@@ -9,6 +10,10 @@ export interface INews{
   title: string;
   content: string;
   author: string;
+}
+
+interface IDataApi{
+  data: INews[]
 }
 
 function App() {
@@ -19,10 +24,11 @@ function App() {
     const loadPosts = async () => {
       try {
         setLoading(true);
-        const {data} = await api.get("/news");
+        const {data}: IDataApi = await api.get("/news");
         setPostList(data);
       } catch (error) {
-        console.log(error);
+        const errorData = error as AxiosError<string>;
+        console.log(errorData)
       } finally {
         setLoading(false);
       }
